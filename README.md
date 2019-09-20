@@ -48,7 +48,7 @@ console.log(parse(str));
 
 tests on my PC: _Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz_
 
-- simple object
+- simple object, ~7X faster
 
 ```
 {"a":1,"b":"hello","c":{"x":1,"y":"zzzzzz"}}
@@ -59,7 +59,7 @@ native parse: 109.784ms
 unsafe parse: 45.594ms
 ```
 
-- object with array
+- object with array, ~3X faster
 
 ```
 {"a":1,"b":"hello","c":{"x":1,"y":"zzzzzz"},"d1":["asd","aaaaaa","asdasdasd"],"d":[{"x":1,"y":"zzzzzz"},{"x":1,"y":"zzzz"},{"x":1,"y":"z"}]}
