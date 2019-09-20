@@ -1,6 +1,6 @@
 {
   "name": "unsafe-json",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "unsafe json serializer, but fast.",
   "main": "index.js",
   "scripts": {

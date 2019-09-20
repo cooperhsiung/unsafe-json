@@ -44,19 +44,29 @@ console.log(str);
 console.log(parse(str));
 ```
 
+## Api
+
+### .build(schema: any, strict = true): (obj: any) => string
+
+to squeeze a little bit more performance, set `strict = false`, it will not dispose type of **undefined**
+
+### .parse(jsonStr: string)
+
+like JSON.parse
+
 ## Performance
 
 tests on my PC: _Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz_
 
-- simple object, ~7X faster
+- simple object, ~8X faster (strict=false)
 
 ```
 {"a":1,"b":"hello","c":{"x":1,"y":"zzzzzz"}}
 ------- performance comparation -------
-native stringify: 71.237ms
-unsafe stringify: 11.731ms
-native parse: 109.784ms
-unsafe parse: 45.594ms
+native stringify: 68.610ms
+unsafe stringify: 8.842ms
+native parse: 103.864ms
+unsafe parse: 42.718ms
 ```
 
 - object with array, ~3X faster
@@ -72,7 +82,7 @@ unsafe parse: 72.011ms
 
 ## Todo
 
-- [ ] not support `undefined` type
+- [ ] xxx
 
 ## License
 

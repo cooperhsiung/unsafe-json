@@ -3,20 +3,20 @@ import { build, parse } from './index';
 let j = {
   a: 1,
   b: 'hello',
-  c: { x: 1, y: 'zzzzzz' },
-  d1: ['asd', 'aaaaaa', 'asdasdasd'], // array map slow
-  d: [{ x: 1, y: 'zzzzzz' }, { x: 1, y: 'zzzz' }, { x: 1, y: 'z' }] // array map slow
+  c: { x: 1, y: 'zzzzzz' }
+  // d1: ['asd', 'aaaaaa', 'asdasdasd'], // array maybe slow
+  // d: [{ x: 1, y: 'zzzzzz' }, { x: 1, y: 'zzzz' }, { x: 1, y: 'z' }] // array maybe slow
 };
 
 let j_schema = {
   a: 'number',
   b: 'string',
-  c: { x: 'number', y: 'string' },
-  d1: ['string'], // array map slow
-  d: [{ x: 'number', y: 'string' }] // array map slow
+  c: { x: 'number', y: 'string' }
+  // d1: ['string'], // array maybe slow
+  // d: [{ x: 'number', y: 'string' }] // array maybe slow
 };
 
-let j_stringify = build(j_schema);
+let j_stringify = build(j_schema, false);
 
 let s = j_stringify(j);
 
@@ -74,5 +74,3 @@ console.timeEnd('unsafe parse');
 // unsafe stringify: 23.594ms 25~31
 // native parse: 124.244ms
 // unsafe parse: 60.771ms
-
-//
