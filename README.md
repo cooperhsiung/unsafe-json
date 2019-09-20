@@ -72,7 +72,7 @@ unsafe parse: 72.011ms
 
 ## Todo
 
-- [ ] xxxx
+- [ ] not support `undefined` type
 
 ## License
 
