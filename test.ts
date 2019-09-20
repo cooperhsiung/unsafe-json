@@ -4,7 +4,7 @@ let j = {
   a: 1,
   b: 'hello',
   c: { x: 1, y: 'zzzzzz' },
-  // d: ['hello', 'asdasd', 'world'] // array map slow
+  d1: ['asd', 'aaaaaa', 'asdasdasd'], // array map slow
   d: [{ x: 1, y: 'zzzzzz' }, { x: 1, y: 'zzzz' }, { x: 1, y: 'z' }] // array map slow
 };
 
@@ -12,8 +12,8 @@ let j_schema = {
   a: 'number',
   b: 'string',
   c: { x: 'number', y: 'string' },
-  // d: ['string'] // array map slow
-  d: ['object'] // array map slow
+  d1: ['string'], // array map slow
+  d: [{ x: 'number', y: 'string' }] // array map slow
 };
 
 let j_stringify = build(j_schema);
@@ -69,7 +69,6 @@ console.timeEnd('native parse');
 console.time('unsafe parse');
 test4();
 console.timeEnd('unsafe parse');
-
 
 //native stringify: 102.321ms
 // unsafe stringify: 23.594ms 25~31

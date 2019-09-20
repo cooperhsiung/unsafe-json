@@ -5,23 +5,10 @@
 export function build(scheme: any) {
   function connect(scheme: any, preKey = ''): string {
     if (Array.isArray(scheme) && scheme.length === 1) {
-      let inner = '';
-
-      if (scheme[0] === 'string') {
-        // inner = '${obj' + preKey + '.map(e=>`"${e}"`).join(",")}';
-        //   inner = '${obj' + preKey + '.reduce((s,e)=> s+`"${e}",`,"")}';
-        //   inner = '${obj' + preKey + '.reduce((s,e)=> s+`"${e}",`,"")}';
-        inner = '${join(obj' + preKey + ',"string")}';
-        // inner = '${joinStr(obj' + preKey + ')}';
-      } else if (scheme[0] === 'number' || scheme[0] === 'boolean') {
-        inner = '${obj' + preKey + '.join(",")}';
-      } else if (scheme[0] === 'object') {
-        // inner = '${obj' + preKey + '.map(JSON.stringify).join(",")}';
-          inner = '${join(obj' + preKey + ',"object")}';
-
-      } else if (typeof scheme[0] === 'object') {
-        inner = '${obj'+preKey+'.map(obj=>' + connect(scheme[0], preKey) + ').join(",")}'; // prettier-ignore
-      }
+      const inner =
+        typeof scheme[0] === 'object'
+          ? '${obj'+preKey+'.reduce((s,obj)=>s+' + connect(scheme[0]) + '+",","").slice(0, -1)}' // prettier-ignore
+          : '${join(obj' + preKey + ',"' + scheme[0] + '")}';
       if (preKey === '') {
         return '`[' + inner + ']`';
       }
@@ -99,47 +86,35 @@ export function build(scheme: any) {
     return preKey === '' ? '`{' + inner + '}`' : '{' + inner + '}';
   }
 
-  // function join(obj: any, sep = '') {
-  //   let str = '';
-  //   for (let i = 0; i < obj.length; i++) {
-  //     if (i === obj.length - 1) {
-  //       str += sep + obj[i] + sep;
-  //     } else {
-  //       str += sep + obj[i] + sep + ',';
-  //     }
-  //   }
-  //   return str;
-  // }
-
-    function join(obj:any, type = 'string') {
-        let str = '';
-        let len = obj.length;
-        for (let i = 0; i < len; i++) {
-            if (i === len - 1) {
-                if (type === 'string') {
-                    str += '"' + obj[i] + '"';
-                } else if (type === 'number' || type === 'boolean') {
-                    str +=  obj[i]
-                } else if (type === 'object') {
-                    str +=   JSON.stringify(obj[i])
-                }
-            } else {
-                if (type === 'string') {
-                    str += '"' + obj[i] + '"' + ',';
-                } else if (type === 'number' || type === 'boolean') {
-                    str +=  obj[i] + ',';
-                } else if (type === 'object') {
-                    str +=   JSON.stringify(obj[i])+ ',';
-                }
-            }
+  function join(obj: any, type: string) {
+    let str = '';
+    const len = obj.length;
+    for (let i = 0; i < len; i++) {
+      if (i === len - 1) {
+        if (type === 'string') {
+          str += '"' + obj[i] + '"';
+        } else if (type === 'number' || type === 'boolean') {
+          str += obj[i];
+        } else if (type === 'object') {
+          str += JSON.stringify(obj[i]);
         }
-        return str;
+      } else {
+        if (type === 'string') {
+          str += '"' + obj[i] + '"' + ',';
+        } else if (type === 'number' || type === 'boolean') {
+          str += obj[i] + ',';
+        } else if (type === 'object') {
+          str += JSON.stringify(obj[i]) + ',';
+        }
+      }
     }
+    return str;
+  }
 
   const exec = eval(
     '((obj) => {' + join.toString() + ';return' + connect(scheme) + '})'
   );
-  console.log(exec.toString());
+
   return function(obj: any) {
     return exec(obj);
   };
